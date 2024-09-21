@@ -133,7 +133,15 @@ class _HomePageState extends State<HomePage> {
         actions: [
           MaterialButton(
             onPressed: () {
-              String newHabitName = nameController.text;
+              String newHabitName = nameController.text
+                  .trim(); // استخدام trim للتأكد من عدم وجود مسافات
+              if (newHabitName.isEmpty) {
+                // عرض رسالة تنبيه
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Please enter a habit name')),
+                );
+                return; // الخروج من الدالة إذا كان الحقل فارغ
+              }
               context.read<HabitDatabase>().addnewhabit(newHabitName);
               Navigator.pop(context);
               nameController.clear();
@@ -146,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               nameController.clear();
             },
             child: const Text("Cancel"),
-          )
+          ),
         ],
       ),
     );
